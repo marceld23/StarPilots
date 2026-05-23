@@ -1,0 +1,30 @@
+{
+    "name": "StarPilots",
+    "version": "0.1.0",
+    "files": [
+        "main.ts",
+        "assets.ts",
+        "audio.ts",
+        "hw.ts",
+        "i18n.ts",
+        "state.ts",
+        "ui.ts",
+        "player.ts",
+        "pickups.ts",
+        "enemies.ts",
+        "bosses.ts",
+        "trenchrun.ts",
+        "arena.ts",
+        "fps.ts",
+        "sidescroller.ts",
+        "squadron.ts"
+    ],
+    "supportedTargets": [
+        "arcade"
+    ],
+    "dependencies": {
+        "device": "*",
+        "settings": "*"
+    },
+    "testDependencies": {}
+}

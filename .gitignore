@@ -1,0 +1,43 @@
+# ===== MakeCode / PXT =====
+built/
+pxt_modules/
+yotta_modules/
+yotta_targets/
+.pxt/
+_site/
+.header.json
+.simstate.json
+*.uf2
+*.hex
+
+# ===== Node / Yarn =====
+node_modules/
+.yarn/
+yarn-debug.log*
+yarn-error.log*
+.yarnrc
+
+# ===== Editor / IDE =====
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== Claude Code (per-developer config, not for repo) =====
+.claude/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Local junk =====
+*.log
+*.db
+*.tgz
+%APPDATA%/
+
+# ===== Local secrets =====
+.env
+.env.local
+.env.*.local
