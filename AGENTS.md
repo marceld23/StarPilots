@@ -4,9 +4,10 @@ Notes for AI agents continuing work on this project. Collection of the most impo
 
 ## Project context
 
+- **Repo layout**: README/AGENTS at the repo root, all MakeCode source under [`game/`](game/). Run every build command from inside `game/`.
 - **Target**: MakeCode Arcade on the **ELECFREAKS Retro** (STM32F401-based)
-- **Build via**: `yarn dlx makecode build -h stm32f401 [--deploy]` (Yarn 4, `yarn global add` does not work — `dlx` is the way)
-- **Language**: the user communicates in German, but the codebase is now English-first. Comments stay in English. UI strings are localized via [i18n.ts](i18n.ts) (EN/DE switchable in Settings).
+- **Build via**: `cd game && yarn dlx makecode build -h stm32f401 [--deploy]` (Yarn 4, `yarn global add` does not work — `dlx` is the way)
+- **Language**: the user communicates in German, but the codebase is now English-first. Comments stay in English. UI strings are localized via [i18n.ts](game/i18n.ts) (EN/DE switchable in Settings).
 - **Asset workflow**: sprites can be edited visually in the VS Code Asset Explorer; the user is familiar with that.
 
 ## MakeCode Arcade pitfalls
@@ -87,7 +88,7 @@ const hp: number = s.data["hp"]
 
 ## Game flow architecture
 
-Main state machine in [main.ts](main.ts) using enum `gs.Screen`:
+Main state machine in [main.ts](game/main.ts) using enum `gs.Screen`:
 
 ```
 Boot ──(any key)──▶ Title
@@ -130,10 +131,10 @@ To add another language, copy `i18n.de.ts` to e.g. `i18n.fr.ts`, replace the Ger
 
 ## Important design decisions
 
-- **Endless levels** instead of a fixed count (user request). Difficulty scales via formulas in [state.ts](state.ts).
-- **Battery display** in [hw.ts:13](hw.ts#L13) is a placeholder — there's no universal battery API in the ELECFREAKS standard lib. Swap when a hardware extension is added.
+- **Endless levels** instead of a fixed count (user request). Difficulty scales via formulas in [state.ts](game/state.ts).
+- **Battery display** in [hw.ts:13](game/hw.ts#L13) is a placeholder — there's no universal battery API in the ELECFREAKS standard lib. Swap when a hardware extension is added.
 - **The 2nd Alliance-side boss** is the "Razor Squadron" (4 elite Dominion fighters as a squadron boss). Confirmed by the user — don't change without asking.
-- **Boss phases**: 3 phases based on HP (100-66%, 66-33%, < 33%). Phase logic lives in [bosses.ts](bosses.ts).
+- **Boss phases**: 3 phases based on HP (100-66%, 66-33%, < 33%). Phase logic lives in [bosses.ts](game/bosses.ts).
 - **Ship models differ** between the two factions:
   - Falcon-A (Alliance starter): shield regenerates, shoots 4 lasers, no hull HP
   - Sabre-I (Dominion starter): armor without regen, shoots 2 lasers
@@ -157,7 +158,7 @@ What the user explicitly called out (in order of requests):
 
 `pins.pinByCfg(DAL.CFG_PIN_VIBRATION)` (index 76) **must not** be used without hardware knowledge. In one attempt during this session the returned pin on the Retro either didn't exist or was shared with critical peripheral hardware → immediate kernel panic (continuous tone + bright screen + device unresponsive).
 
-**Consequence**: `hw.vibrate()` is a no-op ([hw.ts:18](hw.ts#L18)). Hit feedback uses `scene.cameraShake(amplitude, durationMs)` instead.
+**Consequence**: `hw.vibrate()` is a no-op ([hw.ts:18](game/hw.ts#L18)). Hit feedback uses `scene.cameraShake(amplitude, durationMs)` instead.
 
 **Before using `pinByCfg`** for any hardware feature, check:
 1. Does the specific board actually define this config (in `codal.json` or its hardware datasheet)?
@@ -174,6 +175,8 @@ What the user explicitly called out (in order of requests):
 ## Quick reference: build/deploy
 
 ```bash
+cd game
+
 # Build only
 yarn dlx makecode build -h stm32f401
 

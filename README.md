@@ -1,5 +1,9 @@
 # StarPilots
 
+<p align="center">
+  <img src="docs/logo.png" alt="StarPilots logo" width="240">
+</p>
+
 Top-down space shooter with sub-game-modes for the **ELECFREAKS Retro** (MakeCode Arcade hardware).
 Pick a faction (Alliance / Dominion), a ship and a difficulty, fight through endless levels with alternating bosses, and run four different minigames in between.
 
@@ -7,9 +11,11 @@ Pick a faction (Alliance / Dominion), a ship and a difficulty, fight through end
 
 ## Quick Start
 
-1. **Build**: `yarn dlx makecode build -h stm32f401`
+All MakeCode commands are run from inside the [`game/`](game/) subfolder.
+
+1. **Build**: `cd game && yarn dlx makecode build -h stm32f401`
 2. **Bootloader mode**: plug in USB, hold Reset + press MENU — `ARCADE-F4` shows up as a USB drive
-3. **Flash**: `yarn dlx makecode build -h stm32f401 --deploy`
+3. **Flash**: `cd game && yarn dlx makecode build -h stm32f401 --deploy`
 4. **Play**:
    - Splash → press A → Title → Start → Difficulty → Faction → Ship → go
    - Controls: D-Pad to move, A to shoot, B for special, MENU to pause
@@ -189,7 +195,11 @@ The selected difficulty is persisted.
 
 **Prerequisites:** Node.js, Yarn 4 (or `npx`).
 
+All build commands run inside the [`game/`](game/) subfolder (that's where `pxt.json` lives).
+
 ```bash
+cd game
+
 # Build for ELECFREAKS Retro (STM32F4)
 yarn dlx makecode build -h stm32f401
 
@@ -197,7 +207,7 @@ yarn dlx makecode build -h stm32f401
 yarn dlx makecode build -h stm32f401 --deploy
 ```
 
-To put the Retro into bootloader mode: plug in USB, **hold Reset + press MENU** — it appears as USB drive `ARCADE-F4`. Then run the deploy command, or drag the `built/stm32f401/binary.uf2` file onto it.
+To put the Retro into bootloader mode: plug in USB, **hold Reset + press MENU** — it appears as USB drive `ARCADE-F4`. Then run the deploy command, or drag the `game/built/stm32f401/binary.uf2` file onto it.
 
 ### Other MakeCode Arcade hardware
 | Hardware | Variant |
@@ -212,25 +222,35 @@ To put the Retro into bootloader mode: plug in USB, **hold Reset + press MENU** 
 
 ```
 .
-├── main.ts            State machine, input handlers, collisions, update loop
-├── state.ts           Shared state, ship config, difficulty, persistence
-├── i18n.ts            Localization - English build (identity passthrough)
-├── i18n.de.ts         Localization - German build (alternative to i18n.ts)
-├── assets.ts          Sprites (ships, bosses, emblems, cockpit, reticle, etc.)
-├── audio.ts           Themes + sound effects
-├── hw.ts              Battery stub, brightness, volume
-├── ui.ts              All screens and renderables
-├── player.ts          Player movement, lasers, special, shield/armor
-├── enemies.ts         Enemy spawning + AI
-├── pickups.ts         Asteroids + Guardian/Shadow pickups
-├── bosses.ts          Bosses (incl. Citadel Sphere, Alliance Armada)
-├── trenchrun.ts       Minigame: canyon-run cockpit shooter
-├── arena.ts           Minigame: Guardian vs Shadow plasma-blade arena
-├── fps.ts             Minigame: FPS in a corridor
-├── sidescroller.ts    Minigame: side-view platformer
-├── squadron.ts        Squadron Commander AI wingmen
-└── pxt.json           MakeCode project definition
+├── README.md            Project front page (you are here)
+├── AGENTS.md            Notes for AI agents continuing the work
+├── docs/
+│   └── logo.png         Project logo
+├── .github/workflows/   GitHub Actions CI (MakeCode build)
+└── game/                MakeCode Arcade project (everything below)
+    ├── pxt.json         MakeCode project definition
+    ├── mkc.json         MakeCode CLI config
+    ├── tsconfig.json    TypeScript compiler config
+    ├── main.ts          State machine, input handlers, collisions, update loop
+    ├── state.ts         Shared state, ship config, difficulty, persistence
+    ├── i18n.ts          Localization - English build (identity passthrough)
+    ├── i18n.de.ts       Localization - German build (alternative to i18n.ts)
+    ├── assets.ts        Sprites (ships, bosses, emblems, cockpit, reticle, etc.)
+    ├── audio.ts         Themes + sound effects
+    ├── hw.ts            Battery stub, brightness, volume
+    ├── ui.ts            All screens and renderables
+    ├── player.ts        Player movement, lasers, special, shield/armor
+    ├── enemies.ts       Enemy spawning + AI
+    ├── pickups.ts       Asteroids + Guardian/Shadow pickups
+    ├── bosses.ts        Bosses (incl. Citadel Sphere, Alliance Armada)
+    ├── trenchrun.ts     Minigame: canyon-run cockpit shooter
+    ├── arena.ts         Minigame: Guardian vs Shadow plasma-blade arena
+    ├── fps.ts           Minigame: FPS in a corridor
+    ├── sidescroller.ts  Minigame: side-view platformer
+    └── squadron.ts      Squadron Commander AI wingmen
 ```
+
+Build outputs (`game/built/`) and fetched dependencies (`game/pxt_modules/`) live alongside the source but are gitignored.
 
 ## Note on code identifiers
 
@@ -243,11 +263,11 @@ The UI ships in two languages, **selected at compile time**: English (default) o
 How it works:
 - `i18n.ts` is the English module (identity passthrough — call sites already pass English text).
 - `i18n.de.ts` is the German module (single `switch (key)` returning German translations; unknown keys fall back to English).
-- [pxt.json](pxt.json) lists exactly one of the two in its `files` array.
+- [pxt.json](game/pxt.json) lists exactly one of the two in its `files` array.
 
 ### Build in German
 
-1. Open [pxt.json](pxt.json).
+1. Open [pxt.json](game/pxt.json).
 2. In the `files` array, replace `"i18n.ts"` with `"i18n.de.ts"`.
 3. Rebuild and flash:
    ```bash
@@ -259,18 +279,18 @@ Only one of the two files may be listed at a time; both define `i18n.t()` and PX
 
 ### Translation coverage
 
-The German module covers menus, settings, buttons, boss names, and short result labels (`SIEG!`, `NIEDERLAGE`, etc.). The longer help-screen / minigame-intro / how-to text stays in English even in the German build — including the full translations there pushes the binary past the flash budget. Add or move entries in [i18n.de.ts](i18n.de.ts) if you need wider coverage and have room to spare.
+The German module covers menus, settings, buttons, boss names, and short result labels (`SIEG!`, `NIEDERLAGE`, etc.). The longer help-screen / minigame-intro / how-to text stays in English even in the German build — including the full translations there pushes the binary past the flash budget. Add or move entries in [i18n.de.ts](game/i18n.de.ts) if you need wider coverage and have room to spare.
 
 ### Adding another language
 
-1. Copy [i18n.de.ts](i18n.de.ts) to e.g. `i18n.fr.ts`.
+1. Copy [i18n.de.ts](game/i18n.de.ts) to e.g. `i18n.fr.ts`.
 2. Replace the German strings in the `switch` cases with French translations.
 3. Update `languageName()` to return `"Francais"`.
-4. Swap `"i18n.ts"` for `"i18n.fr.ts"` in [pxt.json](pxt.json) and rebuild.
+4. Swap `"i18n.ts"` for `"i18n.fr.ts"` in [pxt.json](game/pxt.json) and rebuild.
 
 ## Hardware notes
 
-- **Battery display** in [hw.ts](hw.ts) is a placeholder (slowly decays) — the ELECFREAKS Retro has no standard API
+- **Battery display** in [hw.ts](game/hw.ts) is a placeholder (slowly decays) — the ELECFREAKS Retro has no standard API
 - **Vibration** on `CFG_PIN_VIBRATION` causes a kernel panic on the Retro hardware (it shares a pin with critical peripherals); it's been disabled as a no-op
 - **Palette index `e` (14) is brown**, not gray! For real gray always use `b` (11) (#a4839f, "battleship gray")
 
