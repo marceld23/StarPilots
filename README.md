@@ -345,4 +345,12 @@ Ideas for future extensions:
 
 ## License
 
-Private project. All ship, boss, faction and minigame names are original to this project. No trademarked names are intended to be referenced in the user-visible content.
+Released under the [MIT License](LICENSE).
+
+All ship, boss, faction and minigame names are original to this project. No trademarked names are intended to be referenced in the user-visible content.
+
+## Community
+
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
