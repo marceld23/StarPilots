@@ -4,7 +4,7 @@
   <img src="docs/logo.png" alt="StarPilots logo" width="240">
 </p>
 
-Top-down space shooter with sub-game-modes for the **ELECFREAKS Retro** (MakeCode Arcade hardware).
+Top-down space shooter with sub-game-modes for the [**ELECFREAKS Retro**](https://shop.elecfreaks.com/products/elecfreaks-retro-makecode-arcade-for-education) ([wiki](https://wiki.elecfreaks.com/en/retroarcade/)) — a [MakeCode Arcade](https://arcade.makecode.com/hardware)-compatible handheld with an STM32F401 MCU and a 160×120 screen.
 Pick a faction (Alliance / Dominion), a ship and a difficulty, fight through endless levels with alternating bosses, and run four different minigames in between.
 
 > **Kid-dad project** — built together by Justus and Marcel. Not a commercial product: a small game we made for fun on a portable arcade handheld. Issues and pull requests welcome, but expect the response cadence of a hobby project.
@@ -212,11 +212,13 @@ To put the Retro into bootloader mode: plug in USB, **hold Reset + press MENU** 
 ### Other MakeCode Arcade hardware
 | Hardware | Variant |
 | --- | --- |
-| ELECFREAKS Retro | `stm32f401` |
+| [ELECFREAKS Retro](https://shop.elecfreaks.com/products/elecfreaks-retro-makecode-arcade-for-education) | `stm32f401` |
 | Adafruit PyGamer / PyBadge | `samd51` |
 | Meowbit / kitronik | `n3` |
 | Brainpad Arcade | `n4` |
 | RPi Pico Arcade | `rp2040` |
+
+See the full list at [arcade.makecode.com/hardware](https://arcade.makecode.com/hardware).
 
 ## Project layout
 
